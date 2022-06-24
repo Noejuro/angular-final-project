@@ -1,0 +1,84 @@
+@use '@angular/material' as mat;
+
+@import "~@angular/material/theming";
+
+@include mat.core();
+
+/* For use in src/lib/core/theming/_palette.scss */
+
+
+$primary: mat.define-palette((
+    50 : #ffffff,
+    100 : #ffffff,
+    200 : #ffffff,
+    300 : #fffffe,
+    400 : #fffffe,
+    500 : #fffffe,
+    600 : #fffffe,
+    700 : #fffffe,
+    800 : #fffffe,
+    900 : #fffffd,
+    A100 : #ffffff,
+    A200 : #ffffff,
+    A400 : #ffffff,
+    A700 : #ffffff,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #000000,
+        400 : #000000,
+        500 : #000000,
+        600 : #000000,
+        700 : #000000,
+        800 : #000000,
+        900 : #000000,
+        A100 : #000000,
+        A200 : #000000,
+        A400 : #000000,
+        A700 : #000000,
+    )
+));
+
+$accent: mat.define-palette((
+    50 : #fdf7f8,
+    100 : #faebed,
+    200 : #f7dde1,
+    300 : #f3cfd5,
+    400 : #f1c5cc,
+    500 : #eebbc3,
+    600 : #ecb5bd,
+    700 : #e9acb5,
+    800 : #e7a4ae,
+    900 : #e296a1,
+    A100 : #ffffff,
+    A200 : #ffffff,
+    A400 : #ffffff,
+    A700 : #fffefe,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #000000,
+        400 : #000000,
+        500 : #000000,
+        600 : #000000,
+        700 : #000000,
+        800 : #000000,
+        900 : #000000,
+        A100 : #000000,
+        A200 : #000000,
+        A400 : #000000,
+        A700 : #000000,
+    )
+));
+$warn: mat.define-palette(mat.$red-palette);
+$background-color: #232946;
+
+$theme: mat-dark-theme($primary, $accent, $warn);
+
+$background: map-get($theme, background);
+$background: map_merge($background, (background: $background-color));
+$theme: map_merge($theme, (background: $background));
+
+@include mat.all-component-colors($theme);
