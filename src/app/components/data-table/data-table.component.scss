@@ -1,0 +1,33 @@
+table {
+    width: 100%;
+}
+
+.table-container {
+    min-height: 200px;
+    max-height: calc(100vh - 200px);
+    overflow: auto;
+}
+
+.mat-column-name {
+    font-size: 1.2em;
+    padding-right: 10px;
+}
+
+.mat-column-price {
+    width: 100px;
+    border-left: 1px solid currentColor;
+    text-align: center;
+}
+
+.mat-column-isAvailable {
+    width: 50px;
+    border-left: 1px solid currentColor;
+    padding-left: 24px;
+    text-align: center;
+}
+
+@media only screen and (max-width: 600px) {
+    .mat-column-name {
+        font-size: 1em;
+    }
+}

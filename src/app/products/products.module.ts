@@ -1,20 +1,22 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProductsComponent } from './components/products/products.component';
+import { ComponentsModule } from '../components/components.module';
 
-const productsModule = [
+const components = [
   ProductsComponent,
 ]
 
 @NgModule({
   declarations: [
-    ...productsModule
+    ...components
   ],
   exports: [
-    ...productsModule
+    ...components
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    ComponentsModule
   ]
 })
 export class ProductsModule { }
