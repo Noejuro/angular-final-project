@@ -1,0 +1,32 @@
+.products-container {
+    display: flex;
+    flex: 1 1 auto;
+    flex-wrap: wrap;
+    
+    margin-top: 50px;
+    gap: 20px;
+}
+
+.filters-container {
+    flex: 0 0 25%;
+    max-width: 25%;
+
+    background-color: white;
+    color: #232946;
+    border-radius: 6px;
+    padding: 30px 10px;
+}
+
+.table-container {
+    flex-grow: 1;
+    
+    background-color: blue;
+    padding: 30px 10px;
+}
+
+@media only screen and (max-width: 600px) {
+    .filters-container {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+}

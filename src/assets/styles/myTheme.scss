@@ -2,10 +2,12 @@
 
 @import "~@angular/material/theming";
 
-@include mat.core();
 
-/* For use in src/lib/core/theming/_palette.scss */
+$custom-typography: mat-typography-config(
+  $font-family: 'Anek Malayalam'
+);
 
+@include mat-core($custom-typography);
 
 $primary: mat.define-palette((
     50 : #ffffff,

@@ -1,13 +1,4 @@
-<mat-toolbar color="primary">
-    <span class="title">Angular Project</span>
-    <button mat-button  [routerLink]="'/dashboard'" routerLinkActive="item-selected">Dashboard</button>
-    <button mat-button  [routerLink]="'/heroes'" routerLinkActive="item-selected">Heroes</button>
-</mat-toolbar>
-
-
-<router-outlet></router-outlet>
-<button mat-raised-button>Basic</button>
-<button mat-raised-button color="primary">Primary</button>
-<button mat-raised-button color="accent">Accent</button>
-<button mat-raised-button color="warn">Warn</button>
-<button mat-raised-button disabled>Disabled</button>
+<div class="container">
+    <app-toolbar></app-toolbar>
+    <app-products></app-products>
+</div>
