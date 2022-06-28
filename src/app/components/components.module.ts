@@ -1,25 +1,32 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ToolbarComponent } from './toolbar/toolbar.component';
-
 //Material modules
 import { MatButtonModule } from '@angular/material/button'
 import { MatToolbarModule } from '@angular/material/toolbar'
-import { MatIconModule } from '@angular/material/icon'
+import { MatIconModule } from '@angular/material/icon';
+import { MatTableModule } from '@angular/material/table'
+
+//Components
+import { ToolbarComponent } from './toolbar/toolbar.component';
+import { DataTableComponent } from './data-table/data-table.component'
+
+
 
 const materialModules = [
   MatButtonModule,
   MatToolbarModule,
-  MatIconModule
+  MatIconModule,
+  MatTableModule
 ]
 
 const components = [
-  ToolbarComponent
+  ToolbarComponent,
+  DataTableComponent
 ]
 
 @NgModule({
   declarations: [
-    ...components
+    ...components,
   ],
   exports: [
     ...components
