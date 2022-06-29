@@ -1,0 +1,25 @@
+<form [formGroup]="formGroup">
+
+    <div class="name-container">
+        <mat-form-field appearance="outline" color="primary" class="input-name">
+            <input type="text" id="name" matInput formControlName="name" placeholder="Search name" >
+        </mat-form-field>
+    </div>
+
+    <div class="price-container">
+        <mat-form-field appearance="outline" color="primary" class="input-price">
+            <input type="text" id="min" matInput formControlName="min" placeholder="Minimum" >
+            <span matPrefix>$&nbsp;</span>
+        </mat-form-field>
+        <span> - </span>
+        <mat-form-field appearance="outline" color="primary" class="input-price">
+            <input type="text" id="max" matInput formControlName="max" placeholder="Maximum" >
+            <span matPrefix>$&nbsp;</span>
+        </mat-form-field>
+    </div>
+
+    <div class="availability-container">
+        <mat-slide-toggle formControlName="availability" color="primary">Availability</mat-slide-toggle>
+    </div>    
+
+</form>

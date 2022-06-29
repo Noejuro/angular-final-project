@@ -9,6 +9,7 @@ $custom-typography: mat-typography-config(
 
 @include mat-core($custom-typography);
 
+//Dark Palette
 $primary: mat.define-palette((
     50 : #ffffff,
     100 : #ffffff,
@@ -74,13 +75,53 @@ $accent: mat.define-palette((
         A700 : #000000,
     )
 ));
+
 $warn: mat.define-palette(mat.$red-palette);
 $background-color: #232946;
 
-$theme: mat-dark-theme($primary, $accent, $warn);
+//Light Palette
+$primaryLight: mat.define-palette((
+    50 : #e5e5e9,
+    100 : #bdbfc8,
+    200 : #9194a3,
+    300 : #65697e,
+    400 : #444962,
+    500 : #232946,
+    600 : #1f243f,
+    700 : #1a1f37,
+    800 : #15192f,
+    900 : #0c0f20,
+    A100 : #6075ff,
+    A200 : #2d49ff,
+    A400 : #0021f9,
+    A700 : #001ee0,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #ffffff,
+        400 : #ffffff,
+        500 : #ffffff,
+        600 : #ffffff,
+        700 : #ffffff,
+        800 : #ffffff,
+        900 : #ffffff,
+        A100 : #ffffff,
+        A200 : #ffffff,
+        A400 : #ffffff,
+        A700 : #ffffff,
+    )
+));
 
-$background: map-get($theme, background);
+$DarkTheme: mat-dark-theme($primary, $accent, $warn);
+$LightTheme: mat-light-theme($primaryLight, $accent, $warn);
+
+$background: map-get($DarkTheme, background);
 $background: map_merge($background, (background: $background-color));
-$theme: map_merge($theme, (background: $background));
+$DarkTheme: map_merge($DarkTheme, (background: $background));
 
-@include mat.all-component-colors($theme);
+@include mat.all-component-colors($DarkTheme);
+
+@include mat-form-field-theme($LightTheme); // Form-Field theme
+@include mat-input-theme($LightTheme);      // Input Theme
+@include mat-slide-toggle-theme($LightTheme)
