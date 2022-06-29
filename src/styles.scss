@@ -5,6 +5,11 @@ body { margin: 0; }
     box-sizing: border-box;
 }
 
+.mat-form-field-appearance-outline .mat-form-field-prefix,
+.mat-form-field-appearance-outline .mat-form-field-suffix {
+  place-self: center;
+}
+
 .spacer {
     flex: 1 1 auto;
 }

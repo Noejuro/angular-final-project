@@ -1,0 +1,32 @@
+form {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+
+
+    font-size: 0.9em;
+}
+
+.mat-form-field {
+    margin-bottom: -1em;
+}
+
+.name-container {
+    flex: 1 1 100%;
+}
+
+.price-container {
+    flex-grow: 1;
+}
+
+.availabilitys-container {
+    flex-grow: 1;
+}
+
+.input-name {
+    width: 100%;
+}
+
+.input-price {
+    max-width: 80px;
+}
