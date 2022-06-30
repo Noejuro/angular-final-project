@@ -7,6 +7,7 @@
     </div>
 
     <div class="price-container">
+        <h3>Price</h3>
         <mat-form-field appearance="outline" color="primary" class="input-price">
             <input type="text" id="min" matInput formControlName="min" placeholder="Minimum" >
             <span matPrefix>$&nbsp;</span>
@@ -19,7 +20,9 @@
     </div>
 
     <div class="availability-container">
-        <mat-slide-toggle formControlName="availability" color="primary">Availability</mat-slide-toggle>
+        <h3>Availability</h3>
+        <mat-slide-toggle formControlName="available" color="primary">In Stock</mat-slide-toggle>
+        <mat-slide-toggle formControlName="notAvailable" color="primary">Not available</mat-slide-toggle>
     </div>    
 
 </form>

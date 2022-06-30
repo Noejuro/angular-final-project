@@ -17,9 +17,9 @@
         <ng-container matColumnDef="isAvailable">
             <th mat-header-cell *matHeaderCellDef> Availability </th>
             <td mat-cell *matCellDef="let element"> 
-                <mat-icon *ngIf="element.isAvailable; else cancelBlock" [ngStyle]="{'color': 'green'}">check-circle</mat-icon>
+                <mat-icon *ngIf="element.isAvailable; else cancelBlock" [ngStyle]="{'color': 'green'}">check_box</mat-icon>
                 <ng-template #cancelBlock> 
-                    <mat-icon color="warn">cancel</mat-icon> 
+                    <mat-icon color="warn">check_box_outline_blank</mat-icon> 
                 </ng-template>
             </td>
         </ng-container>
@@ -29,3 +29,13 @@
     
     </table>
 </div>
+
+<div class="loading-container" *ngIf="isLoadingResults">
+    <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+</div>
+
+
+<mat-paginator 
+    [length]="resultsLength" 
+    [pageSizeOptions]="[10, 25, 50, 100]" 
+></mat-paginator>

@@ -9,12 +9,14 @@ import { MatTableModule } from '@angular/material/table'
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 
 //Components
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import { DataTableComponent } from './data-table/data-table.component';
-import { FiltersComponent } from './filters/filters.component'
+import { FiltersComponent } from './filters/filters.component';
 
 
 
@@ -24,7 +26,9 @@ const materialModules = [
   MatIconModule,
   MatTableModule,
   MatInputModule,
-  MatSlideToggleModule
+  MatSlideToggleModule,
+  MatPaginatorModule,
+  MatProgressSpinnerModule
 ]
 
 const components = [

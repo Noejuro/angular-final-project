@@ -1,15 +1,38 @@
+:host {
+    position: relative;
+}
+
 table {
     width: 100%;
 }
 
+/* width */
+::-webkit-scrollbar {
+    width: 5px;
+}
+  
+/* Track */
+::-webkit-scrollbar-track {
+    background: #424242; 
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #ffffff8a; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #ffffff4b; 
+}
+
 .table-container {
     min-height: 200px;
-    max-height: calc(100vh - 200px);
+    max-height: calc(100vh - 256px);
     overflow: auto;
 }
 
 .mat-column-name {
-    font-size: 1.2em;
     padding-right: 10px;
 }
 
@@ -26,8 +49,15 @@ table {
     text-align: center;
 }
 
-@media only screen and (max-width: 600px) {
-    .mat-column-name {
-        font-size: 1em;
-    }
+.loading-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 56px;
+    right: 0;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

@@ -3,8 +3,11 @@ form {
     flex-wrap: wrap;
     align-items: center;
 
-
     font-size: 0.9em;
+}
+
+h3 {
+    margin: 0;
 }
 
 .mat-form-field {
@@ -19,8 +22,9 @@ form {
     flex-grow: 1;
 }
 
-.availabilitys-container {
+.availability-container {
     flex-grow: 1;
+    display: grid;
 }
 
 .input-name {
