@@ -1,7 +1,7 @@
 export default interface IProductFilters {
-    name?: string | null | undefined,
-    min?: string | null | undefined,
-    max?: string | null | undefined,
+    productName?: string | null | undefined,
+    price_gte?: string | null | undefined,
+    price_lte?: string | null | undefined,
     available?: boolean | null | undefined,
     notAvailable?: boolean | null | undefined
 }

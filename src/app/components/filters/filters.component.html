@@ -2,19 +2,19 @@
 
     <div class="name-container">
         <mat-form-field appearance="outline" color="primary" class="input-name">
-            <input type="text" id="name" matInput formControlName="name" placeholder="Search name" >
+            <input type="text" id="productName" matInput formControlName="productName" placeholder="Search name" >
         </mat-form-field>
     </div>
 
     <div class="price-container">
         <h3>Price</h3>
         <mat-form-field appearance="outline" color="primary" class="input-price">
-            <input type="text" id="min" matInput formControlName="min" placeholder="Minimum" >
+            <input type="text" id="price_gte" matInput formControlName="price_gte" placeholder="Minimum" >
             <span matPrefix>$&nbsp;</span>
         </mat-form-field>
         <span> - </span>
         <mat-form-field appearance="outline" color="primary" class="input-price">
-            <input type="text" id="max" matInput formControlName="max" placeholder="Maximum" >
+            <input type="text" id="price_lte" matInput formControlName="price_lte" placeholder="Maximum" >
             <span matPrefix>$&nbsp;</span>
         </mat-form-field>
         <p *ngIf="!this.formGroup.valid" class="error-message"> Price range must be a number </p>

@@ -12,9 +12,9 @@ export class FiltersComponent implements OnInit {
   @Output() onFiltersChange: EventEmitter<IProductFilters> = new EventEmitter();;
 
   formGroup = new FormGroup({
-    'name': new FormControl(''),
-    'min': new FormControl('', Validators.pattern("^[0-9]*$")),
-    'max': new FormControl('', Validators.pattern("^[0-9]*$")),
+    'productName': new FormControl(''),
+    'price_gte': new FormControl('', Validators.pattern("^[0-9]*$")),
+    'price_lte': new FormControl('', Validators.pattern("^[0-9]*$")),
     'available': new FormControl(true),
     'notAvailable': new FormControl(true)
   })

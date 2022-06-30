@@ -22,30 +22,56 @@ export class ProductsComponent implements OnInit {
   ];
 
   isLoadingResults: boolean = false;
-  paginatorQuery: string = "";
-  filtersQuery: string = "?";
+  paginatorQuery: string = "?_page=1&_limit=10";
+  filtersQuery: string = "";
 
   constructor() { }
 
   ngOnInit(): void {
-  }
+  }  
 
   handleFilters(filters: IProductFilters): void {
     this.isLoadingResults = true;
-    this.filtersQuery = '?';
-    for(let filter in filters) {
-      this.filtersQuery += `${filter}=${filters[filter as keyof IProductFilters]}&`
-    }
-    this.filtersQuery = this.filtersQuery.slice(0, -1)
-    let query = this.filtersQuery + this.paginatorQuery;
+    
+    this.filtersQuery = this.generateFiltersQuery(filters);
+
+    let query = this.paginatorQuery + this.filtersQuery;
     console.log(query)
   }
 
   handlePaginator(paginator: MatPaginator): void {
     this.isLoadingResults = true;
-    this.paginatorQuery = `&page=${paginator?.pageIndex + 1}&size=${paginator?.pageSize}`;
-    let query = this.filtersQuery + this.paginatorQuery;
+    this.paginatorQuery = `?_page=${paginator?.pageIndex + 1}&_limit=${paginator?.pageSize}`;
+    let query = this.paginatorQuery + this.filtersQuery;
     console.log(query)
   }
+
+  loadData(query: string): void {
+    
+  }
+
+  generateFiltersQuery(filters: IProductFilters): string {
+    let query = '';
+
+    for(let filter in filters) {
+      if(filter !== 'available' && filter !== 'notAvailable') {
+        if(filter === 'productName') {
+          query += `${filter}_like^=${filters[filter as keyof IProductFilters]}&`
+        }
+        else {
+          query += `${filter}=${filters[filter as keyof IProductFilters]}&`
+        }
+      }
+    }
+    
+    if( (filters.available && filters.notAvailable) || (!filters.available && !filters.notAvailable) ) {
+      query = query.slice(0, -1)
+    }
+    else {
+      query += filters.available ? 'isAvailable=true' : 'isAvailable=false';
+    }
+
+    return query;
+  }  
 
 }
