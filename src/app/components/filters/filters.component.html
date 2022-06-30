@@ -17,6 +17,7 @@
             <input type="text" id="max" matInput formControlName="max" placeholder="Maximum" >
             <span matPrefix>$&nbsp;</span>
         </mat-form-field>
+        <p *ngIf="!this.formGroup.valid" class="error-message"> Price range must be a number </p>
     </div>
 
     <div class="availability-container">

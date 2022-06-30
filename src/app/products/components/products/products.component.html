@@ -1,8 +1,16 @@
 <div class="products-container">
     <div class="containers filters-container">
-        <app-filters></app-filters>
+        <app-filters 
+            (onFiltersChange)="handleFilters($event)"
+        ></app-filters>
     </div>
     <div class="containers table-container">
-        <app-data-table (onPaginatorChange)="loadData($event)" [isLoadingResults]="isLoadingResults"></app-data-table>
+        <app-data-table 
+            (onPaginatorChange)="handlePaginator($event)" 
+            [data]="dataSource"
+            [resultsLength]="resultsLength"
+            [displayedColumns]="displayedColumns"
+            [isLoadingResults]="isLoadingResults"
+        ></app-data-table>
     </div>
 </div>

@@ -1,8 +1,7 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import IProduct from 'src/app/interfaces/Product';
-import DATA from 'src/app/DATA'
+import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { tap } from 'rxjs';
+import IDataTableColumns from 'src/app/interfaces/DataTableColumns';
 
 @Component({
   selector: 'app-data-table',
@@ -10,12 +9,14 @@ import { tap } from 'rxjs';
   styleUrls: ['./data-table.component.scss']
 })
 
-export class DataTableComponent implements OnInit, AfterViewInit {
-  displayedColumns: string[] = ['name', 'price', 'isAvailable'];
-  dataSource: IProduct[] = DATA;
-  resultsLength: number = 100;
-  @Input() isLoadingResults?: boolean;
+export class DataTableComponent implements OnInit, AfterViewInit, OnChanges {
+  @Input() data: unknown[] = [];
+  @Input() resultsLength: number = 0;
+  @Input() displayedColumns: IDataTableColumns[] = [];
+  @Input() isLoadingResults: boolean = true;
   @Output() onPaginatorChange: EventEmitter<MatPaginator> = new EventEmitter();
+
+  columnsNames: string[] = [];
 
   @ViewChild(MatPaginator)
   paginator?: MatPaginator;
@@ -23,6 +24,12 @@ export class DataTableComponent implements OnInit, AfterViewInit {
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if(changes['displayedColumns']) {
+      this.columnsNames = changes['displayedColumns'].currentValue.map( (column: IDataTableColumns) => column.value);
+    }
   }
 
   ngAfterViewInit(): void {
