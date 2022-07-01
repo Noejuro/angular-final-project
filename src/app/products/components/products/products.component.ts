@@ -55,20 +55,21 @@ export class ProductsComponent implements OnInit {
 
     for(let filter in filters) {
       if(filter !== 'available' && filter !== 'notAvailable') {
+
         if(filter === 'productName') {
           query += `${filter}_like^=${filters[filter as keyof IProductFilters]}&`
         }
         else {
           query += `${filter}=${filters[filter as keyof IProductFilters]}&`
         }
+
       }
     }
-    
-    if( (filters.available && filters.notAvailable) || (!filters.available && !filters.notAvailable) ) {
-      query = query.slice(0, -1)
-    }
-    else {
-      query += filters.available ? 'isAvailable=true' : 'isAvailable=false';
+
+    query = query.slice(0, -1)
+
+    if( filters.available !== filters.notAvailable ) {
+      query += filters.available ? '&isAvailable=true' : '&isAvailable=false';
     }
 
     return query;
