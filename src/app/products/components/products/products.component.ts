@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import DATA from 'src/app/DATA'
+
 import IDataTableColumns from 'src/app/interfaces/DataTableColumns';
 import IProduct from 'src/app/interfaces/Product';
 import IProductFilters from 'src/app/interfaces/ProductFilters';
@@ -11,8 +13,8 @@ interface IFiltersParams {
 }
 
 interface IPaginatorParams {
-  page: number,
-  limit: number
+  _page: number,
+  _limit: number
 }
 
 @Component({
@@ -31,36 +33,55 @@ export class ProductsComponent implements OnInit {
 
   isLoadingResults: boolean = false;
   paginatorParams: IPaginatorParams = {
-    page: 1,
-    limit: 10
+    _page: 1,
+    _limit: 10
   };
   filtersParams: IFiltersParams = {};
 
-  constructor() { }
+  constructor(private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
+    this.route.params
+      .subscribe(params => {
+        for(let param in params) {
+          if( param === '_page' || param === '_limit' ) {
+            this.paginatorParams[param] = params[param];
+          }
+          else {
+            this.filtersParams[param] = params[param];
+          }
+        }
+        console.log("First Load Paginator: ", this.paginatorParams);
+        console.log("First Load Filters: ", this.filtersParams); 
+      }
+    );
   }  
 
   handleFilters(filters: IProductFilters): void {
     this.isLoadingResults = true;
     
     this.filtersParams = this.generateFiltersParams(filters);
+
+    this.updateURLParams();
     this.loadData();
   }
 
   handlePaginator(paginator: MatPaginator): void {
     this.isLoadingResults = true;
+
     this.paginatorParams = {
-      page: paginator.pageIndex + 1,
-      limit: paginator.pageSize
+      _page: paginator.pageIndex + 1,
+      _limit: paginator.pageSize
     }
+
+    this.updateURLParams();
     this.loadData();
   }
 
   generateQuery(): string {
     let query = '';
 
-    query = `?_page=${this.paginatorParams.page}&_limit=${this.paginatorParams.limit}`;
+    query = `?_page=${this.paginatorParams._page}&_limit=${this.paginatorParams._limit}`;
 
     for(let filter in this.filtersParams) {
       query += `&${filter}=${this.filtersParams[filter]}`;
@@ -96,5 +117,15 @@ export class ProductsComponent implements OnInit {
 
     return {...params};
   }  
+
+  updateURLParams(): void {
+    this.router.navigate([],{
+      relativeTo: this.route,
+      queryParams: {
+        ...this.paginatorParams,
+        ...this.filtersParams
+      }
+    })
+  }
 
 }
