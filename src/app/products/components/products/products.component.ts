@@ -1,21 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { ActivatedRoute, Router } from '@angular/router';
+import { filter, tap } from 'rxjs';
 
 import DATA from 'src/app/DATA'
 
 import IDataTableColumns from 'src/app/interfaces/DataTableColumns';
 import IProduct from 'src/app/interfaces/Product';
 import IProductFilters from 'src/app/interfaces/ProductFilters';
-
-interface IFiltersParams {
-  [key: string]: any
-}
-
-interface IPaginatorParams {
-  _page: number,
-  _limit: number
-}
+import { IFiltersParams, IPaginatorParams } from 'src/app/interfaces/Params';
 
 @Component({
   selector: 'app-products',
@@ -41,25 +34,37 @@ export class ProductsComponent implements OnInit {
   constructor(private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.route.params
+
+    this.route.queryParams
+      .pipe(
+        filter(data => Object.keys(data).length !== 0)
+      )
       .subscribe(params => {
-        for(let param in params) {
-          if( param === '_page' || param === '_limit' ) {
-            this.paginatorParams[param] = params[param];
-          }
-          else {
-            this.filtersParams[param] = params[param];
+        const { _page, _limit } = params;
+        let newFiltersParams: IFiltersParams = {};
+
+        for( let param in params ) {
+          if(param !== '_page' && param !== '_limit') {
+            newFiltersParams[param] = params[param];
           }
         }
-        console.log("First Load Paginator: ", this.paginatorParams);
-        console.log("First Load Filters: ", this.filtersParams); 
+
+        this.paginatorParams = {_page, _limit};
+        this.filtersParams = { ...this.filtersParams, ...newFiltersParams };
+
+        console.log("Paginator from URL: ", this.paginatorParams);
+        console.log("Filters from URL: ", this.filtersParams); 
       }
     );
   }  
 
   handleFilters(filters: IProductFilters): void {
     this.isLoadingResults = true;
-    
+
+    Object.keys(filters).forEach((key) => filters[key as keyof IProductFilters] === "" && delete filters[key as keyof IProductFilters]);
+
+    console.log(filters)
+
     this.filtersParams = this.generateFiltersParams(filters);
 
     this.updateURLParams();
@@ -127,5 +132,6 @@ export class ProductsComponent implements OnInit {
       }
     })
   }
+  
 
 }

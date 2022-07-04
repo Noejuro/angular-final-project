@@ -1,37 +1,60 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { debounceTime, map } from 'rxjs';
+import { debounceTime } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+
 import IProductFilters from 'src/app/interfaces/ProductFilters';
+import { IFiltersParams } from 'src/app/interfaces/Params';
 
 @Component({
   selector: 'app-filters',
   templateUrl: './filters.component.html',
   styleUrls: ['./filters.component.scss']
 })
-export class FiltersComponent implements OnInit {
-  @Output() onFiltersChange: EventEmitter<IProductFilters> = new EventEmitter();;
+export class FiltersComponent implements OnInit, OnChanges {
+  @Input() params: IFiltersParams = {};
+  @Output() onFiltersChange: EventEmitter<IProductFilters> = new EventEmitter();
 
   formGroup = new FormGroup({
-    'productName': new FormControl(''),
+    'productName_like^': new FormControl(''),
     'price_gte': new FormControl('', Validators.pattern("^[0-9]*$")),
     'price_lte': new FormControl('', Validators.pattern("^[0-9]*$")),
     'available': new FormControl(true),
     'notAvailable': new FormControl(true)
   })
 
-  constructor() { }
+  constructor(private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
+
     this.formGroup.valueChanges
       .pipe( 
         debounceTime(600)
       )
       .subscribe( (formData) => {
-        Object.keys(formData).forEach((key) => formData[key as keyof IProductFilters] === "" && delete formData[key as keyof IProductFilters])
         if(this.formGroup.valid) {
           this.onFiltersChange.emit(formData)
         }
       })
+
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    for(let param in changes['params'].currentValue) {
+      if(param !== 'isAvailable') {
+        if(this.formGroup.get(param)?.value !== changes['params'].currentValue[param]) {
+          this.formGroup.patchValue({ [param]: changes['params'].currentValue[param] });
+        }
+      }
+      else {
+        const isAvailable = (changes['params'].currentValue[param] === true || changes['params'].currentValue[param] === 'true') ;
+
+        if(this.formGroup.get('available')?.value !== isAvailable || this.formGroup.get('notAvailable')?.value === isAvailable) {
+          this.formGroup.patchValue({ available: isAvailable });
+          this.formGroup.patchValue({ notAvailable: !isAvailable });
+        }
+      }
+    }
   }
 
 }

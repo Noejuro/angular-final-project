@@ -2,6 +2,7 @@
     <div class="containers filters-container">
         <app-filters 
             (onFiltersChange)="handleFilters($event)"
+            [params]="filtersParams"
         ></app-filters>
     </div>
     <div class="containers table-container">
