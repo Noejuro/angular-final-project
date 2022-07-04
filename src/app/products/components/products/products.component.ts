@@ -49,11 +49,8 @@ export class ProductsComponent implements OnInit {
           }
         }
 
-        this.paginatorParams = {_page, _limit};
+        this.paginatorParams = {_page: parseInt(_page), _limit: parseInt(_limit)};
         this.filtersParams = { ...this.filtersParams, ...newFiltersParams };
-
-        console.log("Paginator from URL: ", this.paginatorParams);
-        console.log("Filters from URL: ", this.filtersParams); 
       }
     );
   }  
@@ -62,8 +59,6 @@ export class ProductsComponent implements OnInit {
     this.isLoadingResults = true;
 
     Object.keys(filters).forEach((key) => filters[key as keyof IProductFilters] === "" && delete filters[key as keyof IProductFilters]);
-
-    console.log(filters)
 
     this.filtersParams = this.generateFiltersParams(filters);
 

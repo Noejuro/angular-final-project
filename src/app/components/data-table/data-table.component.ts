@@ -14,6 +14,8 @@ export class DataTableComponent implements OnInit, AfterViewInit, OnChanges {
   @Input() resultsLength: number = 0;
   @Input() displayedColumns: IDataTableColumns[] = [];
   @Input() isLoadingResults: boolean = true;
+  @Input() page: number = 0;
+  @Input() limit: number = 10;
   @Output() onPaginatorChange: EventEmitter<MatPaginator> = new EventEmitter();
 
   columnsNames: string[] = [];

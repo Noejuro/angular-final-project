@@ -10,6 +10,8 @@
             (onPaginatorChange)="handlePaginator($event)" 
             [data]="dataSource"
             [resultsLength]="resultsLength"
+            [page]="paginatorParams._page"
+            [limit]="paginatorParams._limit"
             [displayedColumns]="displayedColumns"
             [isLoadingResults]="isLoadingResults"
         ></app-data-table>

@@ -29,6 +29,8 @@
 
 
 <mat-paginator 
+    [pageIndex]="page - 1"
+    [pageSize]="limit"
     [length]="resultsLength" 
     [pageSizeOptions]="[10, 25, 50, 100]" 
 ></mat-paginator>
