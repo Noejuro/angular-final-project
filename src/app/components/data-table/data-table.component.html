@@ -19,6 +19,13 @@
       
         <tr mat-header-row *matHeaderRowDef="columnsNames; sticky: true"></tr>
         <tr mat-row *matRowDef="let row; columns: columnsNames"></tr>
+        <div *ngIf="!isLoadingResults">
+            <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell" [attr.colspan]="displayedColumns.length">
+                  No data matching the filter.
+                </td>
+            </tr>
+        </div>
     
     </table>
 

@@ -22,7 +22,7 @@ export class ProductsComponent implements OnInit {
     { displayedName: 'Availability', value: 'isAvailable', type: "check" },
   ];
 
-  isLoadingResults: boolean = false;
+  isLoadingResults: boolean = true;
   paginatorParams: IPaginatorParams = {
     _page: 1,
     _limit: 10
@@ -35,7 +35,7 @@ export class ProductsComponent implements OnInit {
 
     this.route.queryParams
       .pipe(
-        debounceTime(400)
+        debounceTime(100)
       )
       .subscribe(params => {
         if(Object.keys(params).length !== 0) {
