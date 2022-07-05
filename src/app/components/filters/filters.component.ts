@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { debounceTime } from 'rxjs';
-import { ActivatedRoute, Router } from '@angular/router';
 
 import IProductFilters from 'src/app/interfaces/ProductFilters';
 import { IFiltersParams } from 'src/app/interfaces/Params';
@@ -16,14 +15,14 @@ export class FiltersComponent implements OnInit, OnChanges {
   @Output() onFiltersChange: EventEmitter<IProductFilters> = new EventEmitter();
 
   formGroup = new FormGroup({
-    'productName_like^': new FormControl(''),
+    'productName_like': new FormControl(''),
     'price_gte': new FormControl('', Validators.pattern("^[0-9]*$")),
     'price_lte': new FormControl('', Validators.pattern("^[0-9]*$")),
     'available': new FormControl(true),
     'notAvailable': new FormControl(true)
   })
 
-  constructor(private router: Router, private route: ActivatedRoute) { }
+  constructor() { }
 
   ngOnInit(): void {
 

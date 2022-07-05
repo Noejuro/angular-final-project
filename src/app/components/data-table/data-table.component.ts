@@ -1,5 +1,5 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { tap } from 'rxjs';
 import IDataTableColumns from 'src/app/interfaces/DataTableColumns';
 
@@ -9,19 +9,20 @@ import IDataTableColumns from 'src/app/interfaces/DataTableColumns';
   styleUrls: ['./data-table.component.scss']
 })
 
-export class DataTableComponent implements OnInit, AfterViewInit, OnChanges {
+export class DataTableComponent implements OnInit, OnChanges {
   @Input() data: unknown[] = [];
   @Input() resultsLength: number = 0;
   @Input() displayedColumns: IDataTableColumns[] = [];
   @Input() isLoadingResults: boolean = true;
-  @Input() page: number = 0;
+  @Input() page: number = 1;
   @Input() limit: number = 10;
-  @Output() onPaginatorChange: EventEmitter<MatPaginator> = new EventEmitter();
+  @Output() onPaginatorChange: EventEmitter<{pageIndex: number, pageSize: number}> = new EventEmitter();
 
   columnsNames: string[] = [];
 
   @ViewChild(MatPaginator)
   paginator?: MatPaginator;
+  pageEvent!: PageEvent;
 
   constructor() { }
 
@@ -35,9 +36,10 @@ export class DataTableComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   ngAfterViewInit(): void {
+
     this.paginator?.page
       .pipe(
-        tap(() => this.onPaginatorChange.emit(this.paginator))
+        tap(() => this.onPaginatorChange.emit({pageIndex: this.paginator!.pageIndex + 1, pageSize: this.paginator!.pageSize}))
       )
       .subscribe();
   }

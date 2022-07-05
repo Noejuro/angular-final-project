@@ -21,6 +21,15 @@
         <tr mat-row *matRowDef="let row; columns: columnsNames"></tr>
     
     </table>
+
+    <mat-paginator 
+        [pageIndex]="page - 1"
+        [pageSize]="limit"
+        [length]="resultsLength" 
+        [pageSizeOptions]="[5, 10, 25, 50, 100]"
+        class="mat-paginator-sticky" 
+    ></mat-paginator>
+
 </div>
 
 <div class="loading-container" *ngIf="isLoadingResults">
@@ -28,10 +37,4 @@
 </div>
 
 
-<mat-paginator 
-    [pageIndex]="page - 1"
-    [pageSize]="limit"
-    [length]="resultsLength" 
-    [pageSizeOptions]="[10, 25, 50, 100]"
-    class="mat-paginator-sticky" 
-></mat-paginator>
+
