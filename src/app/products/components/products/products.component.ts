@@ -1,14 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
 import { ActivatedRoute, Router } from '@angular/router';
-import { filter, tap } from 'rxjs';
-
-import DATA from 'src/app/DATA'
+import { debounceTime } from 'rxjs';
 
 import IDataTableColumns from 'src/app/interfaces/DataTableColumns';
 import IProduct from 'src/app/interfaces/Product';
 import IProductFilters from 'src/app/interfaces/ProductFilters';
 import { IFiltersParams, IPaginatorParams } from 'src/app/interfaces/Params';
+import { ProductsService } from '../../services/products.service';
 
 @Component({
   selector: 'app-products',
@@ -16,7 +14,7 @@ import { IFiltersParams, IPaginatorParams } from 'src/app/interfaces/Params';
   styleUrls: ['./products.component.scss']
 })
 export class ProductsComponent implements OnInit {
-  dataSource: IProduct[] = DATA;
+  dataSource: IProduct[] = [];
   resultsLength: number = 100;
   displayedColumns: IDataTableColumns[] = [
     { displayedName: 'Name', value: 'productName', type: "text" },
@@ -31,28 +29,40 @@ export class ProductsComponent implements OnInit {
   };
   filtersParams: IFiltersParams = {};
 
-  constructor(private router: Router, private route: ActivatedRoute) { }
+  constructor(private router: Router, private route: ActivatedRoute, private productsService: ProductsService) { }
 
   ngOnInit(): void {
 
     this.route.queryParams
       .pipe(
-        filter(data => Object.keys(data).length !== 0)
+        debounceTime(400)
       )
       .subscribe(params => {
-        const { _page, _limit } = params;
-        let newFiltersParams: IFiltersParams = {};
+        if(Object.keys(params).length !== 0) {
+          const { _page, _limit } = params;
+          let newFiltersParams: IFiltersParams = {};
+  
+          for( let param in params ) {
+            if(param !== '_page' && param !== '_limit') {
+              newFiltersParams[param] = params[param];
+            }
+          }
+  
+          this.paginatorParams = {_page: parseInt(_page), _limit: parseInt(_limit)};
+          this.filtersParams = { ...this.filtersParams, ...newFiltersParams };
 
-        for( let param in params ) {
-          if(param !== '_page' && param !== '_limit') {
-            newFiltersParams[param] = params[param];
+          if(!this.dataSource.length && Object.keys(this.filtersParams).length === 0) {
+            this.loadData();
           }
         }
-
-        this.paginatorParams = {_page: parseInt(_page), _limit: parseInt(_limit)};
-        this.filtersParams = { ...this.filtersParams, ...newFiltersParams };
+        else {
+          if(!this.dataSource.length) {
+            this.loadData();
+          }
+        }
       }
     );
+
   }  
 
   handleFilters(filters: IProductFilters): void {
@@ -62,15 +72,21 @@ export class ProductsComponent implements OnInit {
 
     this.filtersParams = this.generateFiltersParams(filters);
 
+    this.paginatorParams = {
+      ...this.paginatorParams,
+      _page: 1
+    }
+
     this.updateURLParams();
     this.loadData();
   }
 
-  handlePaginator(paginator: MatPaginator): void {
+  handlePaginator(paginator: {pageIndex: number, pageSize: number}): void {
+
     this.isLoadingResults = true;
 
     this.paginatorParams = {
-      _page: paginator.pageIndex + 1,
+      _page: paginator.pageIndex,
       _limit: paginator.pageSize
     }
 
@@ -84,7 +100,12 @@ export class ProductsComponent implements OnInit {
     query = `?_page=${this.paginatorParams._page}&_limit=${this.paginatorParams._limit}`;
 
     for(let filter in this.filtersParams) {
-      query += `&${filter}=${this.filtersParams[filter]}`;
+      if(filter === 'productName_like') {
+        query += `&${filter}=^${this.filtersParams[filter]}`;
+      }
+      else {
+        query += `&${filter}=${this.filtersParams[filter]}`;
+      }
     }
 
     return query;
@@ -92,7 +113,16 @@ export class ProductsComponent implements OnInit {
 
   loadData(): void {
     let query = this.generateQuery();
-    console.log(query);
+    this.productsService.getProducts(query)
+      .subscribe(
+        (response) => {
+            this.isLoadingResults = false;
+
+            this.dataSource = response.body!;
+            this.resultsLength = parseInt(response.headers.get('x-total-count')!);
+            
+          }
+      )
   }
 
   generateFiltersParams(filters: IProductFilters): {[key: string]: any} {
@@ -102,7 +132,7 @@ export class ProductsComponent implements OnInit {
       if(filter !== 'available' && filter !== 'notAvailable') {
 
         if(filter === 'productName') {
-          params['productName_like^'] = filters[filter as keyof IProductFilters]; 
+          params['productName_like'] = filters[filter as keyof IProductFilters]; 
         }
         else {
           params[filter] = filters[filter as keyof IProductFilters]; 
